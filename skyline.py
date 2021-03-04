@@ -308,6 +308,8 @@ if __name__ == "__main__":
     )
 
     options = parser.parse_args()
+    if len(options.runner) > 13:
+        raise Exception("Please make sure your runner name < 13 for stl")
     skyline = RunningSkyline(year=options.year)
     if options.type == "strava":
         skyline.set_strava_config(
