@@ -263,7 +263,7 @@ if __name__ == "__main__":
         help="running type strava or gpx",
     )
     parser.add_argument(
-        "--runner", dest="runner", help="runner name", default="Runner", required=False
+        "--runner", dest="runner", help="runner's name", default="Runner", required=False
     )
     parser.add_argument(
         "--client_id",
@@ -289,11 +289,19 @@ if __name__ == "__main__":
     parser.add_argument(
         "--year", dest="year", help="strava or gpx running year", type=int, default=2020
     )
+    parser.add_argument(
+        "--gpx-dir",
+        dest="gpx_dir",
+        metavar="DIR",
+        type=str,
+        default="GPX_DIR",
+        help="Directory containing GPX files (default: current directory).",
+    )
 
     options = parser.parse_args()
     if len(options.runner) > 10:
         raise Exception("Please make sure your runner name < 9 for stl")
-    skyline = RunningSkyline(year=options.year)
+    skyline = RunningSkyline(year=options.year, base_dir=options.gpx_dir)
     if options.type == "strava":
         skyline.set_strava_config(
             options.client_id, options.client_secret, options.refresh_token
