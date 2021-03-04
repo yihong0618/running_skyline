@@ -1,5 +1,7 @@
 # Running_skyline
 Generate a 3D Skyline in STL format and from `Strava` or `GPX`
+![image](https://user-images.githubusercontent.com/15976103/109935576-b54f1000-7d08-11eb-8170-cb930352e451.png)
+
 
 ## Installation
 
@@ -85,6 +87,8 @@ python3 skyline.py --type gpx --year {year} --runner {your_name}
 ```
 
 **Please make sure your name length < 10**
+# [example](https://github.com/yihong0618/running_skyline/blob/main/example/running_yihong0618_2020.stl)
+
 # Contribution
 
 - Any Issues PR welcome.
