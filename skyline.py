@@ -1,16 +1,15 @@
 import argparse
-import subprocess
-import math
-from collections import defaultdict, namedtuple
 import datetime
+import math
 import os
+import subprocess
 from calendar import monthrange
+from collections import defaultdict, namedtuple
 
-import stravalib
 import gpxpy
+import stravalib
 from solid import scad_render_to_file
-from solid.utils import rotate, polyhedron, translate, linear_extrude, text, cube
-
+from solid.utils import cube, linear_extrude, polyhedron, rotate, text, translate
 
 ACTIVITY_NAME_TUPLE = namedtuple("activity", "date distance")
 
@@ -69,28 +68,14 @@ def generate_skyline_stl(username, year, running_matrix):
         )
     )
 
-    max_scad = rotate([face_angle, 0, 0])(
-        translate(
-            [
-                base_length - base_length / 3 - 10,
-                base_height / 2 - base_top_offset / 2 + 2.5,
-                -1.5,
-            ]
-        )(linear_extrude(height=2)(text("max: " + str(max_run_distance) + " km", 2)))
-    )
-
     total_scad = rotate([face_angle, 0, 0])(
         translate(
             [
-                base_length - base_length / 3 - 10,
-                base_height / 2 - base_top_offset / 2 - 1,
+                base_length - base_length / 3 - 17,
+                base_height / 2 - base_top_offset / 2,
                 -1.5,
             ]
-        )(
-            linear_extrude(height=2)(
-                text("total: " + str(round(total_run_distance, 1)) + " km", 2)
-            )
-        )
+        )(linear_extrude(height=2)(text(str(round(total_run_distance, 1)) + " km", 5)))
     )
 
     running_scad = rotate([face_angle, 0, 0])(
@@ -133,9 +118,7 @@ def generate_skyline_stl(username, year, running_matrix):
             bars += bar
 
     scad_running_filename = "running_" + username + "_" + str(year)
-    scad_skyline_object = (
-        base_scad - running_scad + user_scad + max_scad + total_scad + year_scad
-    )
+    scad_skyline_object = base_scad - running_scad + user_scad + total_scad + year_scad
 
     if bars is not None:
         scad_skyline_object += bars
@@ -308,8 +291,8 @@ if __name__ == "__main__":
     )
 
     options = parser.parse_args()
-    if len(options.runner) > 13:
-        raise Exception("Please make sure your runner name < 13 for stl")
+    if len(options.runner) > 10:
+        raise Exception("Please make sure your runner name < 9 for stl")
     skyline = RunningSkyline(year=options.year)
     if options.type == "strava":
         skyline.set_strava_config(
